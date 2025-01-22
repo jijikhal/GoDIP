@@ -1,4 +1,4 @@
-package internal
+package loading
 
 import (
 	"bufio"
@@ -11,7 +11,7 @@ import (
 	"github.com/jijikhal/GoDIP/pkg/types"
 )
 
-func LoadPPM(filePath string) (*types.Image[uint8], error) {
+func LoadPPM(filePath string) (*types.ColorImage, error) {
 	file, err := os.Open(filePath)
 	if err != nil {
 		return nil, err
@@ -30,27 +30,21 @@ func LoadPPM(filePath string) (*types.Image[uint8], error) {
 	width, _ := strconv.Atoi(dimensions[0])
 	height, _ := strconv.Atoi(dimensions[1])
 
-	image := types.MakeImageMultiChannel[uint8](height, width, 3)
-
 	maxValString, _ := reader.ReadString('\n')
 	maxVal, _ := strconv.Atoi(strings.TrimRight(maxValString, "\n"))
 
-	if maxVal > 255 {
-		return nil, errors.New("too large max value")
-	}
+	image := types.MakeColorImage(height, width, 3, maxVal, 0)
 
 	if encoding == "P3" {
-		fmt.Println("P3")
 		return loadPPMText(image, reader)
 	} else if encoding == "P6" {
-		fmt.Println("P6")
 		return loadPPMBinary(image, reader)
 	} else {
 		return nil, fmt.Errorf("unsupported format: only P6 and P3 is supported")
 	}
 }
 
-func loadPPMText(image *types.Image[uint8], reader *bufio.Reader) (*types.Image[uint8], error) {
+func loadPPMText(image *types.ColorImage, reader *bufio.Reader) (*types.ColorImage, error) {
 
 	row, col, ch := 0, 0, 0
 
@@ -60,8 +54,7 @@ func loadPPMText(image *types.Image[uint8], reader *bufio.Reader) (*types.Image[
 		values := strings.Fields(strings.TrimRight(line, "\n"))
 		for _, v := range values {
 			val, _ := strconv.Atoi(v)
-			fmt.Println(v, row, col, ch)
-			image.SetPixelXYC(col, row, ch, uint8(val))
+			image.SetPixelXYC(col, row, ch, val)
 			ch++
 
 			if ch == 3 {
@@ -84,7 +77,7 @@ func loadPPMText(image *types.Image[uint8], reader *bufio.Reader) (*types.Image[
 	return image, nil
 }
 
-func loadPPMBinary(image *types.Image[uint8], reader *bufio.Reader) (*types.Image[uint8], error) {
+func loadPPMBinary(image *types.ColorImage, reader *bufio.Reader) (*types.ColorImage, error) {
 
 	pixelData := make([]byte, 3*image.Width*image.Height)
 	buffer := make([]byte, 256)
@@ -111,14 +104,12 @@ func loadPPMBinary(image *types.Image[uint8], reader *bufio.Reader) (*types.Imag
 		}
 	}
 
-	fmt.Println(pixelData)
-
 	idx := 0
 	for y := 0; y < image.Height; y++ {
 		for x := 0; x < image.Width; x++ {
-			image.SetPixelXYC(x, y, 0, pixelData[idx])
-			image.SetPixelXYC(x, y, 1, pixelData[idx+1])
-			image.SetPixelXYC(x, y, 2, pixelData[idx+2])
+			image.SetPixelXYC(x, y, 0, int(pixelData[idx]))
+			image.SetPixelXYC(x, y, 1, int(pixelData[idx+1]))
+			image.SetPixelXYC(x, y, 2, int(pixelData[idx+2]))
 			idx += 3
 		}
 	}

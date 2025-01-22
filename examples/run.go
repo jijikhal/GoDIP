@@ -3,19 +3,22 @@ package main
 import (
 	"fmt"
 
-	"github.com/jijikhal/GoDIP/internal"
+	loading "github.com/jijikhal/GoDIP/internal/loading"
+	saving "github.com/jijikhal/GoDIP/internal/saving"
+	"github.com/jijikhal/GoDIP/pkg/filters"
 )
 
 func main() {
-	image, err := internal.LoadPPM("test2.ppm")
+	image, err := loading.Load("ada_threshold.jpg")
 	if err != nil {
 		fmt.Println("Error:", err)
 		return
 	}
 
-	fmt.Println(image.Data)
+	blue := image.GetChannel(0)
 
-	fmt.Printf("Loaded PPM Image: %dx%d\n", image.Width, image.Height)
+	filters.AdaptiveThreshold(blue, 15, 2)
 
-	internal.SaveAsPPM("test3.ppm", image)
+	//saving.SaveAsPPM("test3.ppm", image)
+	saving.Save("test3.jpg", blue.ToColor())
 }
