@@ -34,7 +34,7 @@ func getValueInt(image *types.GrayImage, x int, y int, mode int) int {
 }
 
 func Convolve(image *types.GrayImage, kernel *types.FloatImage, mode int) *types.FloatImage {
-	result := types.MakeFloatImage(image.Height, image.Width, float64(image.MaxValue), float64(image.MinValue))
+	result := types.MakeFloatImage(image.Height, image.Width, float64(image.MinValue), float64(image.MaxValue))
 
 	for y := 0; y < image.Height; y++ {
 		for x := 0; x < image.Width; x++ {

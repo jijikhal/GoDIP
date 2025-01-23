@@ -33,7 +33,7 @@ func LoadPPM(filePath string) (*types.ColorImage, error) {
 	maxValString, _ := reader.ReadString('\n')
 	maxVal, _ := strconv.Atoi(strings.TrimRight(maxValString, "\n"))
 
-	image := types.MakeColorImage(height, width, 3, maxVal, 0)
+	image := types.MakeColorImage(height, width, 3, 0, maxVal)
 
 	if encoding == "P3" {
 		return loadPPMText(image, reader)

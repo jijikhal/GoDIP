@@ -28,7 +28,7 @@ func Load(filePath string) (*types.ColorImage, error) {
 	}
 
 	bounds := rawImage.Bounds()
-	image := types.MakeColorImage(bounds.Dy(), bounds.Dx(), 4, 255, 0)
+	image := types.MakeColorImage(bounds.Dy(), bounds.Dx(), 4, 0, 255)
 
 	for y := bounds.Min.Y; y < bounds.Max.Y; y++ {
 		for x := bounds.Min.X; x < bounds.Max.X; x++ {

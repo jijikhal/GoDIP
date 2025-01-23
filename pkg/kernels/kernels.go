@@ -7,7 +7,7 @@ import (
 )
 
 func BoxKernel(width int, height int) *types.FloatImage {
-	result := types.MakeFloatImage(height, width, 1, 0)
+	result := types.MakeFloatImage(height, width, 0, 1)
 	for i := range width * height {
 		result.SetI(i, 1.0/float64(width*height))
 	}
@@ -15,9 +15,11 @@ func BoxKernel(width int, height int) *types.FloatImage {
 	return result
 }
 
-func GaussKernel(size int) *types.FloatImage {
-	sigma := 0.3*(float64(size-1)*0.5-1) + 0.8
-	result := types.MakeFloatImage(size, size, 1, 0)
+func GaussKernel(size int, sigma float64) *types.FloatImage {
+	if sigma <= 0 {
+		sigma = 0.3*(float64(size-1)*0.5-1) + 0.8
+	}
+	result := types.MakeFloatImage(size, size, 0, 1)
 	offset := (size - 1) / 2
 	sum := 0.0
 	for y := 0; y < size; y++ {
@@ -33,6 +35,31 @@ func GaussKernel(size int) *types.FloatImage {
 		for x := 0; x < size; x++ {
 			value := result.GetXY(x, y)
 			result.SetPixelXY(x, y, value/sum)
+		}
+	}
+
+	return result
+}
+
+func OnesKernel(width int, height int) *types.GrayImage {
+	result := types.MakeGrayImage(height, width, 0, 1)
+	for i := range width * height {
+		result.SetI(i, 1)
+	}
+
+	return result
+}
+
+func CircleKernel(size int) *types.GrayImage {
+	result := types.MakeGrayImage(size, size, 0, 1)
+
+	center := float64(size-1) / 2.0
+
+	for y := range size {
+		for x := range size {
+			if math.Pow(float64(y)-center, 2)+math.Pow(float64(x)-center, 2) <= math.Pow(float64(size)/2, 2) {
+				result.SetPixelXY(x, y, 1)
+			}
 		}
 	}
 

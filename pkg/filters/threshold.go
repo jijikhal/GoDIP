@@ -14,7 +14,8 @@ const (
 	TO_ZERO_INV
 )
 
-func BinaryThreshold(img *types.GrayImage, threshold int, mode int) {
+func BinaryThreshold(img *types.GrayImage, threshold int, mode int) *types.GrayImage {
+	result := types.MakeGrayImage(img.Height, img.Width, img.MinValue, img.MaxValue)
 	pixelCount := img.GetPixelCount()
 	for i := 0; i < pixelCount; i++ {
 		value := img.GetI(i)
@@ -59,11 +60,14 @@ func BinaryThreshold(img *types.GrayImage, threshold int, mode int) {
 			}
 		}
 
-		img.SetI(i, newValue)
+		result.SetI(i, newValue)
 	}
+
+	return result
 }
 
-func BinaryThreshold2(img *types.GrayImage, t1 int, t2 int, mode int) {
+func BinaryThreshold2(img *types.GrayImage, t1 int, t2 int, mode int) *types.GrayImage {
+	result := types.MakeGrayImage(img.Height, img.Width, img.MinValue, img.MaxValue)
 	pixelCount := img.GetPixelCount()
 	for i := 0; i < pixelCount; i++ {
 		value := img.GetI(i)
@@ -110,21 +114,26 @@ func BinaryThreshold2(img *types.GrayImage, t1 int, t2 int, mode int) {
 			}
 		}
 
-		img.SetI(i, newValue)
+		result.SetI(i, newValue)
 	}
+
+	return result
 }
 
-func AdaptiveThreshold(img *types.GrayImage, blockSize int, c float64) {
-	means := Convolve(img, kernels.GaussKernel(blockSize), CLOSEST)
+func AdaptiveThreshold(img *types.GrayImage, blockSize int, c float64) *types.GrayImage {
+	means := Convolve(img, kernels.GaussKernel(blockSize, -1), CLOSEST)
+	result := types.MakeGrayImage(img.Height, img.Width, img.MinValue, img.MaxValue)
 	pixelCount := img.GetPixelCount()
 	for i := 0; i < pixelCount; i++ {
 		value := img.GetI(i)
 		thresh := int(means.GetI(i) - c)
 
 		if value >= thresh {
-			img.SetI(i, img.MaxValue)
+			result.SetI(i, img.MaxValue)
 		} else {
-			img.SetI(i, img.MinValue)
+			result.SetI(i, img.MinValue)
 		}
 	}
+
+	return result
 }

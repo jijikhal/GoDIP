@@ -67,3 +67,7 @@ func Save(filePath string, img *types.ColorImage) error {
 
 	return fmt.Errorf("unsupported file format")
 }
+
+func SaveGray(filePath string, img *types.GrayImage) error {
+	return Save(filePath, img.ToColor())
+}

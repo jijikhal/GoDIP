@@ -13,7 +13,7 @@ type FloatImage struct {
 	MinValue float64
 }
 
-func MakeFloatImage(height int, width int, max float64, min float64) *FloatImage {
+func MakeFloatImage(height int, width int, min float64, max float64) *FloatImage {
 	return &FloatImage{Height: height, Width: width, Data: make([]float64, height*width), MaxValue: max, MinValue: min}
 }
 
@@ -85,7 +85,7 @@ func (image *FloatImage) GetPixelCount() int {
 }
 
 func (image *FloatImage) ToGray(minVal int, maxVal int) *GrayImage {
-	newImage := MakeGrayImage(image.Height, image.Width, maxVal, minVal)
+	newImage := MakeGrayImage(image.Height, image.Width, minVal, maxVal)
 	pixelCount := image.GetPixelCount()
 	for i := 0; i < pixelCount; i++ {
 		newImage.SetI(i, max(minVal, min(maxVal, int(math.Round(image.GetI(i))))))

@@ -1,6 +1,9 @@
 package types
 
-import "errors"
+import (
+	"errors"
+	"fmt"
+)
 
 type ColorImage struct {
 	Width    int
@@ -11,7 +14,7 @@ type ColorImage struct {
 	MinValue int
 }
 
-func MakeColorImage(height int, width int, channels int, max int, min int) *ColorImage {
+func MakeColorImage(height int, width int, channels int, min int, max int) *ColorImage {
 	return &ColorImage{Height: height, Width: width, Channels: channels, Data: make([]int, height*width*channels), MaxValue: max, MinValue: min}
 }
 func (image *ColorImage) GetPixelI(i int) (int, error) {
@@ -82,7 +85,7 @@ func (image *ColorImage) GetPixelCount() int {
 }
 
 func (image *ColorImage) GetChannel(channel int) *GrayImage {
-	newImage := MakeGrayImage(image.Height, image.Width, image.MaxValue, image.MinValue)
+	newImage := MakeGrayImage(image.Height, image.Width, image.MinValue, image.MaxValue)
 	for y := 0; y < image.Height; y++ {
 		for x := 0; x < image.Width; x++ {
 			newImage.SetXY(x, y, image.GetXYC(x, y, channel))
@@ -90,4 +93,33 @@ func (image *ColorImage) GetChannel(channel int) *GrayImage {
 	}
 
 	return newImage
+}
+
+func MergeChannels(channels ...*GrayImage) (*ColorImage, error) {
+	if len(channels) == 0 {
+		return nil, errors.New("at least one channel must be provided")
+	}
+
+	width := channels[0].Width
+	height := channels[0].Height
+	maxValue := channels[0].MaxValue
+	minValue := channels[0].MinValue
+
+	for i, channel := range channels {
+		if channel.Height != height || channel.Width != width || channel.MinValue != minValue || channel.MaxValue != maxValue {
+			return nil, fmt.Errorf("channel %d has different format than others", i)
+		}
+	}
+
+	result := MakeColorImage(height, width, len(channels), minValue, maxValue)
+
+	for y := 0; y < height; y++ {
+		for x := 0; x < width; x++ {
+			for c, channel := range channels {
+				result.SetXYC(x, y, c, channel.GetXY(x, y))
+			}
+		}
+	}
+
+	return result, nil
 }

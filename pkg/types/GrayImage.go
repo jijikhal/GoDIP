@@ -10,7 +10,7 @@ type GrayImage struct {
 	MinValue int
 }
 
-func MakeGrayImage(height int, width int, max int, min int) *GrayImage {
+func MakeGrayImage(height int, width int, min int, max int) *GrayImage {
 	return &GrayImage{Height: height, Width: width, Data: make([]int, height*width), MaxValue: max, MinValue: min}
 }
 
@@ -82,7 +82,7 @@ func (image *GrayImage) GetPixelCount() int {
 }
 
 func (image *GrayImage) ToColor() *ColorImage {
-	newImage := MakeColorImage(image.Height, image.Width, 3, image.MaxValue, image.MinValue)
+	newImage := MakeColorImage(image.Height, image.Width, 3, image.MinValue, image.MaxValue)
 	for y := 0; y < image.Height; y++ {
 		for x := 0; x < image.Width; x++ {
 			newImage.SetXYC(x, y, 0, image.GetXY(x, y))
@@ -92,4 +92,15 @@ func (image *GrayImage) ToColor() *ColorImage {
 	}
 
 	return newImage
+}
+
+func (image *GrayImage) Duplicate() *GrayImage {
+	result := MakeGrayImage(image.Height, image.Width, image.MinValue, image.MaxValue)
+	pixelCount := image.GetPixelCount()
+
+	for i := 0; i < pixelCount; i++ {
+		result.SetI(i, image.GetI(i))
+	}
+
+	return result
 }
