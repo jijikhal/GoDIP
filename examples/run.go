@@ -5,8 +5,7 @@ import (
 
 	loading "github.com/jijikhal/GoDIP/internal/loading"
 	saving "github.com/jijikhal/GoDIP/internal/saving"
-	"github.com/jijikhal/GoDIP/pkg/filters"
-	"github.com/jijikhal/GoDIP/pkg/kernels"
+	"github.com/jijikhal/GoDIP/pkg/transformations"
 )
 
 func main() {
@@ -20,13 +19,8 @@ func main() {
 
 	//thresh := filters.AdaptiveThreshold(red, 15, 0.5)
 
-	saving.SaveGray("test4.jpg", red)
-
-	kernel := kernels.CircleKernel(11)
-	fmt.Println(kernel.Data)
-
-	dilat := filters.MinFilter(red, kernel)
+	resized := transformations.ResizeNearest(red, 10000, 10000)
 
 	//saving.SaveAsPPM("test3.ppm", image)
-	saving.SaveGray("test3.jpg", dilat)
+	saving.SaveGray("test3.jpg", resized)
 }
