@@ -4,6 +4,7 @@ import (
 	"github.com/jijikhal/GoDIP/pkg/types"
 )
 
+// Flips image along the X axis
 func FlipX(img *types.GrayImage) *types.GrayImage {
 	result := types.MakeGrayImage(img.Height, img.Width, img.MinValue, img.MaxValue)
 	halfWidth := img.Width / 2
@@ -17,6 +18,7 @@ func FlipX(img *types.GrayImage) *types.GrayImage {
 	return result
 }
 
+// Flips image along the Y axis
 func FlipY(img *types.GrayImage) *types.GrayImage {
 	result := types.MakeGrayImage(img.Height, img.Width, img.MinValue, img.MaxValue)
 	halfHeight := img.Height / 2
@@ -30,6 +32,7 @@ func FlipY(img *types.GrayImage) *types.GrayImage {
 	return result
 }
 
+// Flips image along the center
 func FlipXY(img *types.GrayImage) *types.GrayImage {
 	result := types.MakeGrayImage(img.Height, img.Width, img.MinValue, img.MaxValue)
 	pixelCount := img.GetPixelCount()
@@ -43,6 +46,7 @@ func FlipXY(img *types.GrayImage) *types.GrayImage {
 	return result
 }
 
+// Rotates the image by 90 degrees
 func Rotate90(img *types.GrayImage) *types.GrayImage {
 	result := types.MakeGrayImage(img.Width, img.Height, img.MinValue, img.MaxValue)
 	for y := 0; y < img.Height; y++ {
@@ -54,6 +58,7 @@ func Rotate90(img *types.GrayImage) *types.GrayImage {
 	return result
 }
 
+// Rotates the image by 270 degrees
 func Rotate270(img *types.GrayImage) *types.GrayImage {
 	result := types.MakeGrayImage(img.Width, img.Height, img.MinValue, img.MaxValue)
 	for y := 0; y < img.Height; y++ {
@@ -65,6 +70,7 @@ func Rotate270(img *types.GrayImage) *types.GrayImage {
 	return result
 }
 
+// Rotates the image by 180 degrees
 func Rotate180(img *types.GrayImage) *types.GrayImage {
 	result := types.MakeGrayImage(img.Height, img.Width, img.MinValue, img.MaxValue)
 	for y := 0; y < img.Height; y++ {

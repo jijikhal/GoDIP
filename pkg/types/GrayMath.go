@@ -4,6 +4,7 @@ import (
 	"errors"
 )
 
+// Inverts all pixels
 func (image *GrayImage) Invert() {
 	pixelCount := image.GetPixelCount()
 	for i := range pixelCount {
@@ -11,6 +12,7 @@ func (image *GrayImage) Invert() {
 	}
 }
 
+// Applies absolute value to all pixels
 func (image *GrayImage) Abs() {
 	pixelCount := image.GetPixelCount()
 	for i := range pixelCount {
@@ -22,6 +24,7 @@ func (image *GrayImage) Abs() {
 	}
 }
 
+// Adds two images of same size
 func (image *GrayImage) Add(img2 *GrayImage) error {
 	if image.Width != img2.Width || image.Height != img2.Height {
 		return errors.New("the images have different size")
@@ -34,6 +37,7 @@ func (image *GrayImage) Add(img2 *GrayImage) error {
 	return nil
 }
 
+// Subtract image from this image (both must be the same size)
 func (image *GrayImage) Subtract(img2 *GrayImage) error {
 	if image.Width != img2.Width || image.Height != img2.Height {
 		return errors.New("the images have different size")
@@ -46,6 +50,7 @@ func (image *GrayImage) Subtract(img2 *GrayImage) error {
 	return nil
 }
 
+// Multiplies two images of same size
 func (image *GrayImage) Multiply(img2 *GrayImage) error {
 	if image.Width != img2.Width || image.Height != img2.Height {
 		return errors.New("the images have different size")

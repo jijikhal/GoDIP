@@ -6,6 +6,7 @@ import (
 	"github.com/jijikhal/GoDIP/pkg/types"
 )
 
+// Calculates the gradient size for each pixel. Edge pixels are skipped.
 func GradientMagnitude(image *types.GrayImage) *types.FloatImage {
 	result := types.MakeFloatImage(image.Height, image.Width, float64(image.MinValue), float64(image.MaxValue))
 
@@ -20,6 +21,7 @@ func GradientMagnitude(image *types.GrayImage) *types.FloatImage {
 	return result
 }
 
+// Calculates the gradient orientation for each pixel. Edge pixels are skipped.
 func GradientOrientation(image *types.GrayImage) *types.FloatImage {
 	result := types.MakeFloatImage(image.Height, image.Width, -math.Pi, math.Pi)
 

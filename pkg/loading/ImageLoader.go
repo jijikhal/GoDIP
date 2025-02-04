@@ -3,6 +3,7 @@ package loading
 import (
 	"bufio"
 	"os"
+	"strings"
 
 	"github.com/jijikhal/GoDIP/pkg/types"
 
@@ -12,7 +13,13 @@ import (
 	_ "image/png"
 )
 
+// Loads image specified by path.
+// Supports PNG, JPEG, GIF and PPM
 func Load(filePath string) (*types.ColorImage, error) {
+	if strings.HasSuffix(filePath, ".ppm") {
+		return loadPPM(filePath)
+	}
+
 	file, err := os.Open(filePath)
 	if err != nil {
 		return nil, err

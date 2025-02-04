@@ -33,6 +33,9 @@ func getValueInt(image *types.GrayImage, x int, y int, mode int) int {
 	return 0
 }
 
+// Applies convolution to image. You can also choose how to treat edges using the `mode` parameter.
+// ZEROS means out-of-image coordinates are filled with zeros, CLOSEST uses the closest pixel value
+// and REPET repets the image cyclicaly
 func Convolve(image *types.GrayImage, kernel *types.FloatImage, mode int) *types.FloatImage {
 	result := types.MakeFloatImage(image.Height, image.Width, float64(image.MinValue), float64(image.MaxValue))
 

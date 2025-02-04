@@ -6,6 +6,7 @@ import (
 	"github.com/jijikhal/GoDIP/pkg/types"
 )
 
+// Generates a box kernel for mean filtering
 func BoxKernel(width int, height int) *types.FloatImage {
 	result := types.MakeFloatImage(height, width, 0, 1)
 	for i := range width * height {
@@ -15,6 +16,8 @@ func BoxKernel(width int, height int) *types.FloatImage {
 	return result
 }
 
+// Generates gaussian kernel of size using some variance.
+// If sigma is zero or less, suitable sigma is calculated
 func GaussKernel(size int, sigma float64) *types.FloatImage {
 	if sigma <= 0 {
 		sigma = 0.3*(float64(size-1)*0.5-1) + 0.8
@@ -41,6 +44,7 @@ func GaussKernel(size int, sigma float64) *types.FloatImage {
 	return result
 }
 
+// Generates binary rectangle kernel
 func OnesKernel(width int, height int) *types.GrayImage {
 	result := types.MakeGrayImage(height, width, 0, 1)
 	for i := range width * height {
@@ -50,6 +54,7 @@ func OnesKernel(width int, height int) *types.GrayImage {
 	return result
 }
 
+// Generates a binary circular kernel
 func CircleKernel(size int) *types.GrayImage {
 	result := types.MakeGrayImage(size, size, 0, 1)
 

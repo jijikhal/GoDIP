@@ -1,5 +1,6 @@
 package types
 
+// Structure for representing histogram
 type Histogram struct {
 	MinValue     int
 	MaxValue     int
@@ -7,6 +8,7 @@ type Histogram struct {
 	Values       []int
 }
 
+// Calculates a histogram of a single channel
 func (image *GrayImage) Histogram(colorsPerBin int) Histogram {
 	result := Histogram{MinValue: image.MinValue, MaxValue: image.MaxValue, ColorsPerBin: colorsPerBin}
 	bins := (image.MaxValue - image.MinValue) / colorsPerBin

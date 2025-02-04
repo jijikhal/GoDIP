@@ -6,6 +6,7 @@ import (
 	"github.com/jijikhal/GoDIP/pkg/types"
 )
 
+// Resizes image using cubic interpolation
 func ResizeNearest(image *types.GrayImage, width int, height int) *types.GrayImage {
 	result := types.MakeGrayImage(height, width, image.MinValue, image.MaxValue)
 

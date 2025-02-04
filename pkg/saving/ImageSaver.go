@@ -16,7 +16,13 @@ import (
 	"github.com/jijikhal/GoDIP/pkg/types"
 )
 
+// Saves image to the specified path.
+// Supports PNG, JPEG, GIF and PPM
 func Save(filePath string, img *types.ColorImage) error {
+	if strings.HasSuffix(filePath, ".ppm") {
+		return saveAsPPM(filePath, img)
+	}
+
 	// Open the file for writing
 	file, err := os.Create(filePath)
 	if err != nil {

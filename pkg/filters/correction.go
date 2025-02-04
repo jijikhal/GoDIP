@@ -6,6 +6,7 @@ import (
 	"github.com/jijikhal/GoDIP/pkg/types"
 )
 
+// Changes brightness of image by adding `change` to every pixel
 func ChangeBrightness(image *types.GrayImage, change int) *types.GrayImage {
 	result := image.Duplicate()
 	for i := range result.GetPixelCount() {
@@ -14,6 +15,7 @@ func ChangeBrightness(image *types.GrayImage, change int) *types.GrayImage {
 	return result
 }
 
+// Changes contrast by multiplying every pixel by `coefficent`
 func ChangeContrast(image *types.GrayImage, coefficent float64) *types.GrayImage {
 	result := image.Duplicate()
 	for i := range result.GetPixelCount() {
@@ -22,6 +24,7 @@ func ChangeContrast(image *types.GrayImage, coefficent float64) *types.GrayImage
 	return result
 }
 
+// Applies gamma correction to image
 func GammaCorrection(image *types.GrayImage, gamma float64) *types.GrayImage {
 	result := image.Duplicate()
 	for i := range result.GetPixelCount() {

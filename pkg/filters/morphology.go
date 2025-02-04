@@ -7,6 +7,7 @@ import (
 	"github.com/jijikhal/GoDIP/pkg/types"
 )
 
+// Applies minimum filter to image using a binary kernel
 func MinFilter(image *types.GrayImage, kernel *types.GrayImage) *types.GrayImage {
 	result := types.MakeGrayImage(image.Height, image.Width, image.MinValue, image.MaxValue)
 
@@ -39,6 +40,7 @@ func MinFilter(image *types.GrayImage, kernel *types.GrayImage) *types.GrayImage
 	return result
 }
 
+// Applies maximum filter to image using a binary kernel
 func MaxFilter(image *types.GrayImage, kernel *types.GrayImage) *types.GrayImage {
 	result := types.MakeGrayImage(image.Height, image.Width, image.MinValue, image.MaxValue)
 
@@ -71,10 +73,12 @@ func MaxFilter(image *types.GrayImage, kernel *types.GrayImage) *types.GrayImage
 	return result
 }
 
+// Applies erosion to binary image using binary kernel
 func Erode(image *types.GrayImage, kernel *types.GrayImage) *types.GrayImage {
 	return binaryMorphology(image, kernel, 0)
 }
 
+// Applies dilatation to binary image using binary kernel
 func Dilatate(image *types.GrayImage, kernel *types.GrayImage) *types.GrayImage {
 	return binaryMorphology(image, kernel, 1)
 }
@@ -111,11 +115,13 @@ func binaryMorphology(image *types.GrayImage, kernel *types.GrayImage, criticalV
 	return result
 }
 
+// Applies closing to binary image using binary kernel
 func Close(image *types.GrayImage, kernel *types.GrayImage) *types.GrayImage {
 	result := Dilatate(image, kernel)
 	return Erode(result, transformations.FlipXY(kernel))
 }
 
+// Applies opening to binary image using binary kernel
 func Open(image *types.GrayImage, kernel *types.GrayImage) *types.GrayImage {
 	result := Erode(image, kernel)
 	return Dilatate(result, transformations.FlipXY(kernel))

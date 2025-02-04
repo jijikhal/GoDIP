@@ -3,8 +3,8 @@ package main
 import (
 	"fmt"
 
-	loading "github.com/jijikhal/GoDIP/internal/loading"
-	saving "github.com/jijikhal/GoDIP/internal/saving"
+	loading "github.com/jijikhal/GoDIP/pkg/loading"
+	saving "github.com/jijikhal/GoDIP/pkg/saving"
 	"github.com/jijikhal/GoDIP/pkg/transformations"
 )
 

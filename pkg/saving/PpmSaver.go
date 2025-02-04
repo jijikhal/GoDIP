@@ -7,7 +7,7 @@ import (
 	"github.com/jijikhal/GoDIP/pkg/types"
 )
 
-func SaveAsPPM(filePath string, img *types.ColorImage) error {
+func saveAsPPM(filePath string, img *types.ColorImage) error {
 	// Open the file for writing
 	file, err := os.Create(filePath)
 	if err != nil {

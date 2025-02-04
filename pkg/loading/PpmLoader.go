@@ -11,7 +11,7 @@ import (
 	"github.com/jijikhal/GoDIP/pkg/types"
 )
 
-func LoadPPM(filePath string) (*types.ColorImage, error) {
+func loadPPM(filePath string) (*types.ColorImage, error) {
 	file, err := os.Open(filePath)
 	if err != nil {
 		return nil, err
